@@ -20,9 +20,7 @@
                 <label class="form-label">Nomor Bon</label>
                 <input type="text"
                       name="number"
-                       class="form-control"
-                       value="{{ $number }}"
-                       readonly>
+                       class="form-control">
               </div>
 
               <div class="mb-3">

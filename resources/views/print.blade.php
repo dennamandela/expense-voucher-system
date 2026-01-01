@@ -14,13 +14,13 @@
 
     @page {
         size: A4 portrait;
-        margin: 7mm;
+        margin: 10mm;
     }
 
     /* ===== CONTAINER SETENGAH A4 ===== */
     .container {
-        width: 100%;
-        height: 14.2cm;
+        width: 98.5%;
+        min-height: 14.2cm;
         border: 1px solid #000;
         padding: 10px;
         box-sizing: border-box;
@@ -60,7 +60,8 @@
     /* ===== TITLE ===== */
     .bukti-wrapper {
         text-align: center;
-        margin: 8px 0;
+        margin: 6px;
+        margin-bottom: 10px;
     }
 
     .bukti-title {
@@ -69,11 +70,39 @@
         padding: 5px 25px;
         font-size: 18px;
         font-weight: bold;
+        margin-bottom: 6px;
     }
 
     .kas-bank {
-        margin-top: 5px;
-    }
+    text-align: center;
+    margin-top: 2px;
+    margin-bottom: 8px;
+    line-height: 1.3;
+
+}
+
+.cb {
+    display: inline-table;
+    vertical-align: middle;
+    margin: 0 14px;
+    font-size: 13px;
+}
+
+.cb input {
+    margin: 0;
+    padding: 0;
+    vertical-align: middle;
+    position: relative;
+    top: -2px;   /* INI KUNCI DOMPDF */
+}
+
+.cb-text {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 4px;
+    line-height: 1;
+}
+
 
     /* ===== INFO ===== */
     .info {
@@ -89,13 +118,26 @@
     }
 
     .row {
-        margin-bottom: 5px;
-    }
+    display: table;
+    width: 100%;
+    margin-bottom: 5px;
+}
 
-    .label {
-        display: inline-block;
-        width: 90px;
-    }
+.label {
+    display: table-cell;
+    width: 150px;        /* KUNCI UTAMA */
+    white-space: nowrap;
+}
+
+.separator {
+    display: table-cell;
+    width: 10px;
+    text-align: center;
+}
+
+.value {
+    display: table-cell;
+}
 
     /* ===== TABLE ===== */
     table {
@@ -127,8 +169,28 @@
 
     /* ===== TERBILANG ===== */
     .terbilang {
-        margin-top: 6px;
+        display: table;
+        width: 100%;
+        margin-top: 8px;
         font-size: 12.5px;
+    }
+
+    .terbilang-label {
+        display: table-cell;
+        width: 150px;
+        white-space: nowrap;
+    }
+
+    .terbilang-sep {
+        display: table-cell;
+        width: 10px;
+        text-align: center;
+    }
+
+    .terbilang-line {
+        display: table-cell;
+        border-bottom: 1px solid #000; /* GARISNYA */
+        padding-bottom: 2px;
     }
 
     /* ===== FOOTER ===== */
@@ -153,9 +215,31 @@
 
     .sign {
         width: 18%;
-        height: 75px;
+        height: 85px;
         text-align: center;
+        vertical-align: top;
+        padding-top: 5px;
     }
+
+    .sign-space {
+        height: 40px; /* ruang tanda tangan */
+    }
+
+    .sign-line {
+        border-top: 1px solid #000;
+        margin: 0 10px;
+    }
+
+    .sign-title {
+    margin-bottom: 2px;
+}
+
+.sign-title-line {
+    border-top: 1px solid #000;
+    margin: 0 10px 6px 10px;
+}
+
+
 
     .keuangan {
         width: 28%;
@@ -170,7 +254,7 @@
     <!-- HEADER -->
     <div class="header">
         <div class="header-left">
-            <img src="file://{{ public_path('images/images-removebg-preview.png') }}"
+            <img src="file://{{ public_path('images/pdip.png') }}"
                 class="logo"
                 alt="Logo">
         </div>
@@ -185,18 +269,25 @@
     <div class="bukti-wrapper">
         <div class="bukti-title">BUKTI PENGELUARAN</div>
         <div class="kas-bank">
-            <input type="checkbox" {{ $voucher->payment_method === 'KAS' ? 'checked' : '' }}> KAS
-            &nbsp;&nbsp;
-            <input type="checkbox" {{ $voucher->payment_method === 'BANK' ? 'checked' : '' }}> BANK
-        </div>
+    <span class="cb">
+        <input type="checkbox" {{ $voucher->payment_method === 'KAS' ? 'checked' : '' }}>
+        <span class="cb-text">KAS</span>
+    </span>
+
+    <span class="cb">
+        <input type="checkbox" {{ $voucher->payment_method === 'BANK' ? 'checked' : '' }}>
+        <span class="cb-text">BANK</span>
+    </span>
+</div>
     </div>
 
     <!-- INFO -->
     <div class="info">
         <div class="info-col">
             <div class="row">
-                <span class="label">Dibayarkan</span>:
-                {{ $voucher->paid_to }}
+                <span class="label">Dibayarkan Kepada</span>
+                <span class="separator">:</span>
+                <span class="value">{{ $voucher->paid_to }}</span>
             </div>
         </div>
         <div class="info-col">
@@ -243,27 +334,67 @@
 
     <!-- TERBILANG (PINDAH KE SINI) -->
     <div class="terbilang">
-        <strong>Terbilang :</strong>
-        {{ terbilang($voucher->total) }} rupiah
+        <span class="terbilang-label">Terbilang</span>
+        <span class="terbilang-sep">:</span>
+        <span class="terbilang-line">
+            {{ terbilang($voucher->total) }} rupiah
+        </span>
     </div>
 
     <!-- FOOTER -->
-    <div class="footer">
-        <div class="footer-row">
-            <div class="sign">Diminta</div>
-            <div class="sign">Diperiksa</div>
-            <div class="sign">Disetujui</div>
-            <div class="sign">Diterima</div>
-            <div class="keuangan">
-                <strong>Data Keuangan</strong><br>
-                Bank : <br>
-                A/C No : <br>
-                No. Cek / BG : <br>
-                Tgl JT : <br>
-                Kasir :
-            </div>
-        </div>
-    </div>
+    <table style="margin-top:12px; width:100%; border-collapse:collapse;">
+    <thead>
+        <tr>
+            <th style="border:1px solid #000; text-align:center; width:14%;">Diminta</th>
+            <th style="border:1px solid #000; text-align:center; width:14%;">Diperiksa</th>
+            <th style="border:1px solid #000; text-align:center; width:14%;">Disetujui</th>
+            <th style="border:1px solid #000; text-align:center; width:14%;">Diterima</th>
+            <th style="border:1px solid #000; text-align:center; width:44%;">Data Keuangan</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr style="height:70px;">
+            <td style="border:1px solid #000; vertical-align:middle;"></td>
+            <td style="border:1px solid #000; vertical-align:middle;"></td>
+            <td style="border:1px solid #000; vertical-align:middle;"></td>
+            <td style="border:1px solid #000; vertical-align:middle;"></td>
+
+            <td style="border:1px solid #000; padding:6px; vertical-align:top;">
+
+                <div style="margin-bottom:6px; white-space:nowrap;">
+                    <span style="display:inline-block; width:85px;">Bank</span> :
+                    <span style="display:inline-block; width:200px; border-bottom:1px solid #000; box-sizing:border-box;"></span>
+                </div>
+
+                <div style="margin-bottom:6px; white-space:nowrap;">
+                    <span style="display:inline-block; width:85px;">A/C No.</span> :
+                    <span style="display:inline-block; width:200px; border-bottom:1px solid #000; box-sizing:border-box;"></span>
+                </div>
+
+                <div style="margin-bottom:6px; white-space:nowrap;">
+                    <span style="display:inline-block; width:85px;">No. Chq / BG</span> :
+                    <span style="display:inline-block; width:200px; border-bottom:1px solid #000; box-sizing:border-box;"></span>
+                </div>
+
+                <div style="margin-bottom:6px; white-space:nowrap;">
+                    <span style="display:inline-block; width:85px;">Tgl J/T</span> :
+                    <span style="display:inline-block; width:200px; border-bottom:1px solid #000; box-sizing:border-box;"></span>
+                </div>
+
+                <div style="white-space:nowrap;">
+                    <span style="display:inline-block; width:85px;">Kasir</span> :
+                    <span style="display:inline-block; width:200px; border-bottom:1px solid #000; box-sizing:border-box;"></span>
+                </div>
+
+            </td>   
+        </tr>
+    </tbody>
+</table>
+
+
+
+
+
 
 </div>
 

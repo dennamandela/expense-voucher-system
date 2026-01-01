@@ -34,9 +34,7 @@ class ExpenseController extends Controller
 
     public function create()
     {
-        $number = 'BP-' . date('Ymd') . '-' . rand(100,999);
-
-        return view('form', compact('number'));
+        return view('form');
     }
 
     public function show($id)

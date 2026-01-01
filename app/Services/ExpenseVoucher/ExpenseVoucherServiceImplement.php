@@ -90,11 +90,10 @@ class ExpenseVoucherServiceImplement extends Service implements ExpenseVoucherSe
 
       $total = collect($data['details'])->sum('amount');
 
-      $number = 'BP-' . date('Ymd') . '-' . mt_rand(10,99) . time();
       $date = date('Y-m-d');
 
       $voucher = $this->mainRepository->create([
-        'number' => $number,
+        'number' => $data['number'],
         'date' => $date,
         'paid_to' => $data['paid_to'],
         'payment_method' => $data['payment_method'],

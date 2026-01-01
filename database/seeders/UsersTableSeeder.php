@@ -15,9 +15,9 @@ class UsersTableSeeder extends Seeder
     {
         DB::table('users')->insert([
             [
-                'name' => 'John Doe',
-                'email' => 'john.doe@example.com',
-                'password' => Hash::make('password123'), // Encrypt the password
+                'name' => 'Irwan Setiawan',
+                'email' => 'irwan121525@gmail.com',
+                'password' => Hash::make('irwan121525'), // Encrypt the password
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
