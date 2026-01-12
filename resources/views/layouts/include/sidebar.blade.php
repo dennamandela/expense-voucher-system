@@ -14,51 +14,90 @@
         <!--begin::Sidebar Wrapper-->
         <div class="sidebar-wrapper">
           <nav class="mt-2">
-  <ul class="nav sidebar-menu flex-column"
-      data-lte-toggle="treeview"
-      role="navigation"
-      aria-label="Main navigation"
-      data-accordion="false">
+            <ul class="nav sidebar-menu flex-column"
+                data-lte-toggle="treeview"
+                role="navigation"
+                aria-label="Main navigation"
+                data-accordion="false">
 
-    <!-- Dashboard -->
-    <li class="nav-item">
-      <a href="{{ url('/dashboard') }}" class="nav-link {{ request()->is('dashboard') ? 'active' : '' }}">
-        <i class="nav-icon bi bi-speedometer"></i>
-        <p>Dashboard</p>
-      </a>
-    </li>
+              <!-- Dashboard -->
+              <li class="nav-item">
+                <a href="{{ url('/dashboard') }}" class="nav-link {{ request()->is('dashboard') ? 'active' : '' }}">
+                  <i class="nav-icon bi bi-speedometer"></i>
+                  <p>Dashboard</p>
+                </a>
+              </li>
+              <li class="nav-item {{ request()->is('opening-balance*') ? 'menu-open' : '' }}">
+                <a href="#" class="nav-link {{ request()->is('opening-balance*') ? 'active' : '' }}">
+                  <i class="nav-icon bi bi-database"></i>
+                  <p>
+                    Master Data
+                    <i class="nav-arrow bi bi-chevron-right"></i>
+                  </p>
+                </a>
 
-    <!-- Bukti Pengeluaran -->
-    <li class="nav-item {{ request()->is('expense-voucher*') ? 'menu-open' : '' }}">
-      <a href="#" class="nav-link {{ request()->is('expense-voucher*') ? 'active' : '' }}">
-        <i class="nav-icon bi bi-receipt"></i>
-        <p>
-          Bukti Pengeluaran
-          <i class="nav-arrow bi bi-chevron-right"></i>
-        </p>
-      </a>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{{ route('opening-balances.index') }}"
+                      class="nav-link {{ request()->routeIs('opening-balance.*') ? 'active' : '' }}">
+                      <i class="nav-icon bi bi-cash-stack"></i>
+                      <p>Saldo Awal</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
 
-      <ul class="nav nav-treeview">
-        <li class="nav-item">
-          <a href="{{ route('expense-voucher') }}"
-             class="nav-link {{ request()->routeIs('expense-voucher') ? 'active' : '' }}">
-            <i class="nav-icon bi bi-list-check"></i>
-            <p>Daftar Bon Pengeluaran</p>
-          </a>
-        </li>
+              <!-- Bukti Pengeluaran -->
+              <li class="nav-item {{ request()->is('expense-voucher*') ? 'menu-open' : '' }}">
+                <a href="#" class="nav-link {{ request()->is('expense-voucher*') ? 'active' : '' }}">
+                  <i class="nav-icon bi bi-receipt"></i>
+                  <p>
+                    Bukti Pengeluaran
+                    <i class="nav-arrow bi bi-chevron-right"></i>
+                  </p>
+                </a>
 
-        <li class="nav-item">
-          <a href="{{ route('expense-voucher.create') }}"
-             class="nav-link {{ request()->routeIs('expense-voucher.create') ? 'active' : '' }}">
-            <i class="nav-icon bi bi-plus-circle"></i>
-            <p>Tambah Bon Pengeluaran</p>
-          </a>
-        </li>
-      </ul>
-    </li>
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{{ route('expense-voucher') }}"
+                      class="nav-link {{ request()->routeIs('expense-voucher') ? 'active' : '' }}">
+                      <i class="nav-icon bi bi-list-check"></i>
+                      <p>Daftar Bon Pengeluaran</p>
+                    </a>
+                  </li>
 
-  </ul>
-</nav>
+                  <li class="nav-item">
+                    <a href="{{ route('expense-voucher.create') }}"
+                      class="nav-link {{ request()->routeIs('expense-voucher.create') ? 'active' : '' }}">
+                      <i class="nav-icon bi bi-plus-circle"></i>
+                      <p>Tambah Bon Pengeluaran</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+              <!-- Laporan -->
+              <li class="nav-item {{ request()->is('reports*') ? 'menu-open' : '' }}">
+                <a href="#" class="nav-link {{ request()->is('reports*') ? 'active' : '' }}">
+                  <i class="nav-icon bi bi-journal-text"></i>
+                  <p>
+                    Laporan
+                    <i class="nav-arrow bi bi-chevron-right"></i>
+                  </p>
+                </a>
+
+                <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="{{ route('reports.cash-book') }}"
+                      class="nav-link {{ request()->routeIs('reports.cash-book*') ? 'active' : '' }}">
+                      <i class="nav-icon bi bi-table"></i>
+                      <p>Rekap Buku Kas</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+
+            </ul>
+          </nav>
         </div>
         <!--end::Sidebar Wrapper-->
       </aside>

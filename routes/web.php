@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\InitialBalanceController;
 
 /*
 |--------------------------------------------------------------------------
@@ -59,4 +61,11 @@ Route::middleware(['auth'])->group(function () {
 
     Route::delete('/expense-voucher/{id}', [ExpenseController::class, 'destroy'])
         ->name('expense-voucher.destroy');
+
+    Route::get('/cash-book', [ReportController::class, 'cashBook'])->name('reports.cash-book');
+    Route::get('/cash-book/export', [ReportController::class, 'exportCashBook']);
+
+    Route::resource('opening-balances', InitialBalanceController::class)
+    ->except(['create', 'edit', 'show']);
+
 });

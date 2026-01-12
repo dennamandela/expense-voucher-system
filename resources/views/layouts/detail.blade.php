@@ -11,16 +11,17 @@
     <meta name="theme-color" content="#1a1a1a" media="(prefers-color-scheme: dark)" />
     <!--end::Accessibility Meta Tags-->
     <!--begin::Primary Meta Tags-->
-    <meta name="title" content="AdminLTE v4 | Dashboard" />
-    <meta name="author" content="ColorlibHQ" />
+    <meta name="title" content="Sistem Bon Pengeluaran PDIP Jawa Barat" />
+    <meta name="author" content="PDIP Jawa Barat" />
     <meta
       name="description"
-      content="AdminLTE is a Free Bootstrap 5 Admin Dashboard, 30 example pages using Vanilla JS. Fully accessible with WCAG 2.1 AA compliance."
+      content="Sistem Bon Pengeluaran PDIP Jawa Barat adalah aplikasi administrasi internal untuk pencatatan, pengelolaan, dan pelaporan bon pengeluaran secara terstruktur, transparan, dan akuntabel."
     />
     <meta
       name="keywords"
-      content="bootstrap 5, bootstrap, bootstrap 5 admin dashboard, bootstrap 5 dashboard, bootstrap 5 charts, bootstrap 5 calendar, bootstrap 5 datepicker, bootstrap 5 tables, bootstrap 5 datatable, vanilla js datatable, colorlibhq, colorlibhq dashboard, colorlibhq admin dashboard, accessible admin panel, WCAG compliant"
+      content="sistem bon pengeluaran, bon pengeluaran, administrasi keuangan, pencatatan pengeluaran, sistem keuangan internal, PDIP Jawa Barat, aplikasi keuangan, pengelolaan anggaran"
     />
+    <meta name="robots" content="noindex, nofollow" />
     <!--end::Primary Meta Tags-->
     <!--begin::Accessibility Features-->
     <!-- Skip links will be dynamically added by accessibility.js -->
