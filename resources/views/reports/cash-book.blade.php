@@ -14,51 +14,20 @@
               <div class="col-md-6">
                 <h3 class="card-title mb-0">Laporan Buku Kas</h3>
               </div>
-
-              {{-- FILTER --}}
-              <div class="col-md-6 text-end">
-                <form method="GET" class="d-inline-block">
-                  <div class="input-group input-group-sm">
-
-                    <select name="year" class="form-select">
-                      @for ($y = now()->year; $y >= 2020; $y--)
-                        <option value="{{ $y }}" {{ $year == $y ? 'selected' : '' }}>
-                          {{ $y }}
-                        </option>
-                      @endfor
-                    </select>
-
-                    <select name="payment_method" class="form-select">
-                      <option value="">Semua</option>
-                      <option value="KAS" {{ $paymentMethod == 'KAS' ? 'selected' : '' }}>KAS</option>
-                      <option value="BANK" {{ $paymentMethod == 'BANK' ? 'selected' : '' }}>BANK</option>
-                    </select>
-
-                    <input type="number"
-                           name="saldo_awal"
-                           class="form-control"
-                           placeholder="Saldo Awal"
-                           value="{{ $saldoAwal }}">
-
-                    <button class="btn btn-secondary">
-                      <i class="bi bi-filter"></i>
-                    </button>
-                  </div>
-                </form>
-              </div>
             </div>
           </div>
 
           {{-- BODY --}}
           <div class="card-body">
-            <table class="table table-bordered">
-              <thead>
+            <table class="table table-bordered table-striped">
+              <thead class="table-light">
                 <tr>
                   <th style="width: 60px">No</th>
                   <th>Bulan</th>
-                  <th class="text-end">Penerimaan</th>
-                  <th class="text-end">Pengeluaran</th>
-                  <th class="text-end">Saldo</th>
+                  <th class="text-end">Saldo Awal (Rp)</th>
+                  <th class="text-end">Penerimaan (Rp)</th>
+                  <th class="text-end">Pengeluaran (Rp)</th>
+                  <th class="text-end">Saldo (Rp)</th>
                 </tr>
               </thead>
               <tbody>
@@ -66,19 +35,26 @@
                   <tr>
                     <td>{{ $i + 1 }}</td>
                     <td>{{ $row['bulan'] }}</td>
-                    <td class="text-end">
-                      Rp {{ number_format($row['penerimaan'], 0, ',', '.') }}
+
+                    <td class="text-end fw-bold">
+                      Rp {{ number_format($row['saldo'], 0, ',', '.') }}
                     </td>
+
+                    <td class="text-end">
+                      Rp {{ number_format($row['penerimaan'] ?? 0, 0, ',', '.') }}
+                    </td>
+
                     <td class="text-end">
                       Rp {{ number_format($row['pengeluaran'], 0, ',', '.') }}
                     </td>
+
                     <td class="text-end fw-bold">
                       Rp {{ number_format($row['saldo'], 0, ',', '.') }}
                     </td>
                   </tr>
                 @empty
                   <tr>
-                    <td colspan="5" class="text-center text-muted">
+                    <td colspan="6" class="text-center text-muted">
                       Tidak ada data laporan
                     </td>
                   </tr>
@@ -89,7 +65,7 @@
 
           {{-- FOOTER --}}
           <div class="card-footer text-end">
-            <a href="#', request()->query()) }}"
+            <a href="{{ route('reports.cash-book.export', request()->query()) }}"
                class="btn btn-sm btn-success">
               <i class="bi bi-file-earmark-excel"></i> Export Excel
             </a>

@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('initial_balances', function (Blueprint $table) {
             $table->id();
             $table->year('year');
-            $table->enum('payment_method', ['KAS', 'BANK']);
+            $table->tinyInteger('month');
             $table->decimal('amount', 15,2);
             $table->timestamps();
 
-            $table->unique(['year', 'payment_method']);
+            $table->unique(['year', 'month']);
         });
     }
 

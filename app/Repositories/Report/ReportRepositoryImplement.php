@@ -27,24 +27,8 @@ class ReportRepositoryImplement extends Eloquent implements ReportRepository{
         $monthlyExpenses = DB::table('expense_vouchers')
             ->selectRaw('MONTH(date) as month, SUM(total) as total')
             ->whereYear('date', $year)
-            ->when($paymentMethod, fn($q) => 
-                $q->where('payment_method', $paymentMethod)
-            )
             ->groupByRaw('MONTH(date)')
             ->pluck('total', 'month');
-        
-        $openingBalance = DB::table('initial_balances')
-            ->where('year', $year)
-            ->when($paymentMethod, fn($q) => 
-                $q->where('payment_method', $paymentMethod)
-            )
-            ->value('amount') ?? 0;
-        
-        if (isset($monthlyExpenses[1])) {
-            $monthlyExpenses[1] += $openingBalance;
-        } else {
-            $monthlyExpenses[1] = $openingBalance;
-        }
 
         return $monthlyExpenses;
     }

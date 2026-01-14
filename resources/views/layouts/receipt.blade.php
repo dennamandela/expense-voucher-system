@@ -26,6 +26,7 @@
     <!--begin::Accessibility Features-->
     <!-- Skip links will be dynamically added by accessibility.js -->
     <meta name="supported-color-schemes" content="light dark" />
+    <link rel="icon" type="image/png" href="{{ asset('images/pdipjabar.png') }}">
     <link rel="preload" href="{{ url('css/adminlte.css') }}" as="style" />
     <!--end::Accessibility Features-->
     <!--begin::Fonts-->

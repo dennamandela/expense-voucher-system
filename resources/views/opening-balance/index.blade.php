@@ -24,19 +24,19 @@
             <table class="table table-bordered">
               <thead>
                 <tr>
-                  <th style="width: 10px">#</th>
+                  <th>#</th>
                   <th>Tahun</th>
-                  <th>Metode</th>
-                  <th>Saldo Awal</th>
-                  <th style="width: 140px">Aksi</th>
+                  <th>Bulan</th>
+                  <th>Saldo Awal (KAS)</th>
+                  <th>Aksi</th>
                 </tr>
-              </thead>
+                </thead>
               <tbody>
                 @forelse ($openingBalances as $row)
                   <tr>
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $row->year }}</td>
-                    <td>{{ $row->payment_method }}</td>
+                    <td>{{ \Carbon\Carbon::create()->month($row->month)->translatedFormat('F') }}</td>
                     <td>Rp {{ number_format($row->amount, 0, ',', '.') }}</td>
                     <td class="text-nowrap">
 
@@ -81,10 +81,13 @@
                             </div>
                             <div class="mb-2">
                               <label>Metode</label>
-                              <select name="payment_method" class="form-control" required>
-                                <option value="KAS" {{ $row->payment_method == 'KAS' ? 'selected' : '' }}>KAS</option>
-                                <option value="BANK" {{ $row->payment_method == 'BANK' ? 'selected' : '' }}>BANK</option>
-                              </select>
+                              <select name="month" class="form-control">
+                              @for ($m = 1; $m <= 12; $m++)
+                                <option value="{{ $m }}" {{ $row->month == $m ? 'selected' : '' }}>
+                                  {{ \Carbon\Carbon::create()->month($m)->translatedFormat('F') }}
+                                </option>
+                              @endfor
+                            </select>
                             </div>
                             <div class="mb-2">
                               <label>Saldo Awal</label>
@@ -132,10 +135,13 @@
             <input type="number" name="year" class="form-control" required>
           </div>
           <div class="mb-2">
-            <label>Metode</label>
-            <select name="payment_method" class="form-control" required>
-              <option value="KAS">KAS</option>
-              <option value="BANK">BANK</option>
+            <label>Bulan</label>
+            <select name="month" class="form-control" required>
+              @for ($m = 1; $m <= 12; $m++)
+                <option value="{{ $m }}">
+                  {{ \Carbon\Carbon::create()->month($m)->translatedFormat('F') }}
+                </option>
+              @endfor
             </select>
           </div>
           <div class="mb-2">

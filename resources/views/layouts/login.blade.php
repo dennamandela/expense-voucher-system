@@ -61,6 +61,8 @@
     <!--begin::Required Plugin(AdminLTE)-->
     <link rel="stylesheet" href="{{ url('css/adminlte.css') }}" />
     <!--end::Required Plugin(AdminLTE)-->
+
+    <link rel="icon" type="image/png" href="{{ asset('images/pdipjabar.png') }}">
   </head>
   <!--end::Head-->
 

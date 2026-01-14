@@ -53,11 +53,11 @@ class InitialBalanceRepositoryImplement extends Eloquent implements InitialBalan
         return $openingBalance->delete();
     }
 
-    public function findByYearAndMethod($year, $paymentMethod)
+    public function findByYearAndMethod($year)
     {
         return $this->model
             ->where('year', $year)
-            ->where('payment_method', $paymentMethod)
-            ->first();
+            ->get()
+            ->pluck('amount', 'month');
     }
 }

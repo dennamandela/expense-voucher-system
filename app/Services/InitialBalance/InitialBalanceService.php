@@ -7,4 +7,5 @@ use LaravelEasyRepository\BaseService;
 interface InitialBalanceService extends BaseService{
 
     // Write something awesome :)
+      public function getByYear($year);
 }

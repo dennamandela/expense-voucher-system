@@ -32,37 +32,29 @@ class ReportServiceImplement extends Service implements ReportService{
       $this->mainRepository = $mainRepository;
     }
 
-    public function cashBook(
-      int $year,
-      float $saldoAwal = 0,
-      ?string $paymentMethod = null
-    ): array {
-        $expenses = $this->mainRepository
-          ->cashBook($year, $paymentMethod);
-
+    public function cashBook(int $year, array $openingBalances)
+    {
+        $expenses = $this->mainRepository->cashBook($year);
         $rows = [];
-        $saldo = 0;
 
         foreach ($this->months as $num => $name) {
-          $pengeluaran = (float) ($expenses[$num] ?? 0);
-          $penerimaan = 0;
+            $saldoAwal   = (float) ($openingBalances[$num] ?? 0);
+            $pengeluaran = (float) ($expenses[$num] ?? 0);
 
-          if ($num === 1) {
-            $saldo = $saldoAwal;
-          }
+            $saldoAkhir = $saldoAwal - $pengeluaran;
 
-          $saldo = $saldo + $penerimaan - $pengeluaran;
-
-          $rows[] = [
-            'bulan' => $name,
-            'penerimaan' => $penerimaan,
-            'pengeluaran' => $pengeluaran,
-            'saldo' => $saldo,
-          ];
+            $rows[] = [
+                'bulan' => $name,
+                'penerimaan' => 0,
+                'pengeluaran' => $pengeluaran,
+                'saldo' => $saldoAkhir,
+                'keterangan' => '',
+            ];
         }
 
         return $rows;
     }
+
 
     // Define your custom methods :)
 }

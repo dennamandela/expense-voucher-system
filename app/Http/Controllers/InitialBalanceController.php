@@ -41,7 +41,7 @@ class InitialBalanceController extends Controller
     {
         $validated = $request->validate([
             'year' => 'required|integer',
-            'payment_method' => 'required|in:KAS,BANK',
+            'month'  => 'required|integer|between:1,12',
             'amount' => 'required|numeric|min:0',
         ]);
 
@@ -75,7 +75,7 @@ class InitialBalanceController extends Controller
     {
         $validated = $request->validate([
             'year' => 'required|integer',
-            'payment_method' => 'required|in:KAS,BANK',
+            'month'  => 'required|integer|between:1,12',
             'amount' => 'required|numeric|min:0',
         ]);
 

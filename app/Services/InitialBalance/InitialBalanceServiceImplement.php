@@ -90,8 +90,8 @@ class InitialBalanceServiceImplement extends Service implements InitialBalanceSe
     }
   }
 
-  public function getByYearAndMethod($year, $paymentMethod)
+  public function getByYear($year)
   {
-    return $this->mainRepository->findByYearAndMethod($year, $paymentMethod);
+    return $this->mainRepository->findByYearAndMethod($year)->toArray();
   }
 }
