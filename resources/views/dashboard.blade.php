@@ -18,7 +18,7 @@
         <div class="border rounded p-3 bg-light">
           <small class="text-muted">Total Bon Bulan Ini</small>
           <h5 class="mb-0 fw-bold">
-            #
+            Rp {{ number_format($totalMonth, 0, ',', '.') }}
           </h5>
         </div>
       </div>

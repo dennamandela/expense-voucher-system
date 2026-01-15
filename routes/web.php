@@ -30,9 +30,6 @@ Route::get('/', function () {
     return redirect()->route('login');
 });
 
-Route::post('/logout', [AuthController::class, 'logout'])
-    ->name('logout');
-
 Route::middleware(['auth'])->group(function () {
 
     Route::get('/dashboard', [DashboardController::class, 'index']);
@@ -71,4 +68,6 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/reports/cash-book/export', [ReportController::class, 'exportCashBook'])
     ->name('reports.cash-book.export');
 
+    Route::post('/logout', [AuthController::class, 'logout'])
+    ->name('logout');
 });

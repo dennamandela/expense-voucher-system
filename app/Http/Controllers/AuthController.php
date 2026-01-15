@@ -37,22 +37,22 @@ class AuthController extends Controller
     public function register(RequestRegister $request)
     {
         try{
-        return $this->authService->RegisterServices($request);
+            return $this->authService->RegisterServices($request);
         } catch (\Exception $e) {
             Log::error('Logout failed: '.$e->getMessage(), ['exception' => $e]);
 
-          return ResponseHelpers::sendError('Something went wrong',[],500);
+            return ResponseHelpers::sendError('Something went wrong',[],500);
         }
     }
 
     public function profile(Request $request)
     {
         try{
-        return $this->authService->ProfileServices($request);
+            return $this->authService->ProfileServices($request);
         } catch (\Exception $e) {
 
             // Handle the exception and return a response
-          return ResponseHelpers::sendError('Something went wrong',[],500);
+            return ResponseHelpers::sendError('Something went wrong',[],500);
         }
     }
 

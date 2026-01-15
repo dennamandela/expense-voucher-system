@@ -51,7 +51,7 @@ class ExpenseVoucherServiceImplement extends Service implements ExpenseVoucherSe
 
             $dompdf = new Dompdf($options);
 
-            $html = view('print', compact('voucher'))->render();
+            $html = view('expense-voucher.print', compact('voucher'))->render();
 
             $dompdf->loadHtml($html);
             $dompdf->setPaper('A4', 'portrait');

@@ -26,7 +26,7 @@ class ExpenseController extends Controller
                 10
             );
 
-            return view('receipt', compact('voucher'));
+            return view('expense-voucher.index', compact('voucher'));
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Something went wrong' . $e->getMessage());
         }
@@ -34,7 +34,7 @@ class ExpenseController extends Controller
 
     public function create()
     {
-        return view('form');
+        return view('expense-voucher.create');
     }
 
     public function show($id)
@@ -47,12 +47,12 @@ class ExpenseController extends Controller
                 ->with('error', 'Data bon tidak ditemukan');
         }
 
-        return view('detail', compact('voucher'));
+        return view('expense-voucher.detail', compact('voucher'));
     }
 
-    public function store(Request $request)
+    public function store(RequestExpense $request)
     {
-        $voucher = $this->expenseVoucherService->createVoucher($request->all());
+        $voucher = $this->expenseVoucherService->createVoucher($request->validated());
 
         return redirect()->route('expense-voucher')->with('success', 'Bon pengeluaran berhasil disimpan');
     }
@@ -76,12 +76,12 @@ class ExpenseController extends Controller
     {
         $voucher = $this->expenseVoucherService->find($id);
 
-        return view('edit', compact('voucher'));
+        return view('expense-voucher.edit', compact('voucher'));
     }
 
-    public function update(Request $request, $id)
+    public function update(RequestExpense $request, $id)
     {
-        $this->expenseVoucherService->updateVoucher($id, $request->all());
+        $this->expenseVoucherService->updateVoucher($id, $request->validated());
 
         return redirect()
             ->route('expense-voucher')
