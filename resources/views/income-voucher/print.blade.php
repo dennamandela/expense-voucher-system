@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>Bukti Pengeluaran</title>
+<title>Bukti Penerimaan</title>
 
 <style>
     body {
@@ -267,15 +267,15 @@
 
     <!-- TITLE -->
     <div class="bukti-wrapper">
-        <div class="bukti-title">BUKTI PENGELUARAN</div>
+        <div class="bukti-title">BUKTI PENERIMAAN</div>
         <div class="kas-bank">
     <span class="cb">
-        <input type="checkbox" {{ $voucher->payment_method === 'KAS' ? 'checked' : '' }}>
+        <input type="checkbox" {{ $incomeVoucher->payment_method === 'KAS' ? 'checked' : '' }}>
         <span class="cb-text">KAS</span>
     </span>
 
     <span class="cb">
-        <input type="checkbox" {{ $voucher->payment_method === 'BANK' ? 'checked' : '' }}>
+        <input type="checkbox" {{ $incomeVoucher->payment_method === 'BANK' ? 'checked' : '' }}>
         <span class="cb-text">BANK</span>
     </span>
 </div>
@@ -285,19 +285,19 @@
     <div class="info">
         <div class="info-col">
             <div class="row">
-                <span class="label">Dibayarkan Kepada</span>
+                <span class="label">Diterima Dari</span>
                 <span class="separator">:</span>
-                <span class="value">{{ $voucher->paid_to }}</span>
+                <span class="value">{{ $incomeVoucher->received_from }}</span>
             </div>
         </div>
         <div class="info-col">
             <div class="row">
                 <span class="label">Nomor</span>:
-                {{ $voucher->number }}
+                {{ $incomeVoucher->number }}
             </div>
             <div class="row">
                 <span class="label">Tanggal</span>:
-                {{ \Carbon\Carbon::parse($voucher->date)->format('d-m-Y') }}
+                {{ \Carbon\Carbon::parse($incomeVoucher->date)->format('d-m-Y') }}
             </div>
         </div>
     </div>
@@ -312,20 +312,20 @@
             </tr>
         </thead>
         <tbody>
-        @foreach($voucher->details as $detail)
+        @foreach($incomeVoucher->details as $detail)
         <tr style="height:36px">
             <td class="keterangan">{{ $detail->description }}</td>
             <td class="jumlah">
                 Rp {{ number_format($detail->amount, 0, ',', '.') }}
             </td>
-            <td>{{ $voucher->notes }}</td>
+            <td>{{ $incomeVoucher->notes }}</td>
         </tr>
         @endforeach
 
         <tr>
             <td style="text-align:center;"><strong>Jumlah</strong></td>
             <td class="jumlah">
-                <strong>Rp {{ number_format($voucher->total, 0, ',', '.') }}</strong>
+                <strong>Rp {{ number_format($incomeVoucher->total, 0, ',', '.') }}</strong>
             </td>
             <td></td>
         </tr>
@@ -337,7 +337,7 @@
         <span class="terbilang-label">Terbilang</span>
         <span class="terbilang-sep">:</span>
         <span class="terbilang-line">
-            {{ terbilang($voucher->total) }} rupiah
+            {{ terbilang($incomeVoucher->total) }} rupiah
         </span>
     </div>
 

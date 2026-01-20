@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\InitialBalance\InitialBalanceService;
+use App\Http\Requests\RequestInitialBalance;
 
 class InitialBalanceController extends Controller
 {
@@ -37,15 +38,9 @@ class InitialBalanceController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(RequestInitialBalance $request)
     {
-        $validated = $request->validate([
-            'year' => 'required|integer',
-            'month'  => 'required|integer|between:1,12',
-            'amount' => 'required|numeric|min:0',
-        ]);
-
-        $this->openingBalanceService->createOpeningBalance($validated);
+        $this->openingBalanceService->createOpeningBalance($request->validated());
 
         return redirect()
             ->back()
@@ -71,15 +66,9 @@ class InitialBalanceController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(RequestInitialBalance $request, string $id)
     {
-        $validated = $request->validate([
-            'year' => 'required|integer',
-            'month'  => 'required|integer|between:1,12',
-            'amount' => 'required|numeric|min:0',
-        ]);
-
-        $this->openingBalanceService->updateOpeningBalance($id, $validated);
+        $this->openingBalanceService->updateOpeningBalance($id, $request->validated());
 
         return redirect()
             ->back()

@@ -1,4 +1,4 @@
-@extends('layouts.receipt')
+@extends('layouts.income-voucher')
 @section('content')
 <div class="app-content">
           <!--begin::Container-->
@@ -10,13 +10,14 @@
                   <div class="card-header">
                       <div class="row w-100 align-items-center">
                           <div class="col-md-6">
-                              <h3 class="card-title mb-0">Bon Pengeluaran</h3>
+                              <h3 class="card-title mb-0">Bon Penerimaan</h3>
                           </div>
                           <div class="col-md-6 text-end">
-                            <a href="{{ route('expense-voucher.create') }}" class="btn btn-sm btn-success me-2">
+                            <a href="{{ route('income-voucher.create') }}"
+                            class="btn btn-sm btn-success me-2">
                                 <i class="bi bi-plus-circle"></i> Tambah Bon
                             </a>
-                              <form action="{{ route('expense-voucher') }}" method="GET" class="d-inline-block">
+                              <form action="{{ route('income-voucher') }}" method="GET" class="d-inline-block">
                                   <div class="input-group input-group-sm" style="width: 280px;">
                                       <input type="text"
                                             name="search"
@@ -40,26 +41,26 @@
                           <th style="width: 10px">#</th>
                           <th>Nomor Bon</th>
                           <th>Tanggal</th>
-                          <th>Dibayarkan Kepada</th>
+                          <th>Diterima Dari</th>
                           <th>Metode (KAS / BANK)</th>
                           <th>Total</th>
                           <th>Aksi</th>
                         </tr>
                       </thead>
                       <tbody>
-                        @forelse ($voucher as $row)
+                        @forelse ($incomeVoucher as $row)
                           <tr>
                             <td>{{ $loop->iteration }}</td>
                             <td>{{ $row->number }}</td>
                             <td>{{ $row->date }}</td>
-                            <td>{{ $row->paid_to }}</td>
+                            <td>{{ $row->received_from }}</td>
                             <td>{{ $row->payment_method }}</td>
                             <td>
                               Rp {{ number_format($row->total, 0, ',', '.') }}
                             </td>
                             <td class="text-nowrap">
     <!-- LIHAT / PREVIEW -->
-    <a href="{{ route('expense-voucher.show', $row->id) }}"
+    <a href="{{ route('income-voucher.show', $row->id) }}"
        target="_blank"
        class="btn btn-sm btn-info"
        title="Lihat">
@@ -67,7 +68,7 @@
     </a>
 
     <!-- UPDATE -->
-    <a href="{{ route('expense-voucher.edit', $row->id) }}"
+    <a href="{{ route('income-voucher.edit', $row->id) }}"
        class="btn btn-sm btn-warning"
        title="Ubah">
         <i class="bi bi-pencil-square"></i>
@@ -75,7 +76,7 @@
 
     <!-- DELETE -->
     <form id="delete-form-{{ $row->id }}"
-      action="{{ route('expense-voucher.destroy', $row->id) }}"
+      action="{{ route('income-voucher.destroy', $row->id) }}"
       method="POST"
       class="d-inline">
     @csrf
@@ -90,7 +91,7 @@
 </form>
 
     <!-- PRINT -->
-    <a href="{{ route('expense-voucher.print', $row->id) }}"
+    <a href="{{ route('income-voucher.print', $row->id) }}"
        class="btn btn-sm btn-secondary"
        title="Print">
         <i class="bi bi-printer"></i>
@@ -108,11 +109,11 @@
                     </table>
                   </div>
                   <!-- /.card-body -->
-                  <div class="card-footer clearfix">
+                  <!-- <div class="card-footer clearfix">
                       <div class="float-end">
-                          {{ $voucher->appends(request()->query())->links('pagination::bootstrap-5') }}
+                          {{ $incomeVoucher->appends(request()->query())->links('pagination::bootstrap-5') }}
                       </div>
-                  </div>
+                  </div> -->
                 </div>
                 <!-- /.card -->
                 

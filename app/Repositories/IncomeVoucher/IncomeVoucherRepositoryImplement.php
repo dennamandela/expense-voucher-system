@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Repositories\ExpenseVoucher;
+namespace App\Repositories\IncomeVoucher;
 
 use LaravelEasyRepository\Implementations\Eloquent;
-use App\Models\ExpenseVoucher;
+use App\Models\IncomeVoucher;
 
-class ExpenseVoucherRepositoryImplement extends Eloquent implements ExpenseVoucherRepository{
+class IncomeVoucherRepositoryImplement extends Eloquent implements IncomeVoucherRepository{
 
     /**
     * Model class to be used in this repository for the common methods inside Eloquent
@@ -14,12 +14,14 @@ class ExpenseVoucherRepositoryImplement extends Eloquent implements ExpenseVouch
     */
     protected $model;
 
-    public function __construct(ExpenseVoucher $model)
+    public function __construct(IncomeVoucher $model)
     {
         $this->model = $model;
     }
 
-    public function all($perPage = 10)
+    // Write something awesome :)
+
+    public function all($perPage = 5)
     {
         return $this->model->with('details')->paginate($perPage);
     }
@@ -36,19 +38,19 @@ class ExpenseVoucherRepositoryImplement extends Eloquent implements ExpenseVouch
 
     public function update($id, $data)
     {
-        $voucher = $this->model->find($id);
+        $incomeVoucher = $this->model->find($id);
 
-        if(is_null($voucher)) {
+        if(is_null($incomeVoucher)) {
             return null;
         }
 
-        return $voucher->update($data);
+        return $incomeVoucher->update($data);
     }
 
     public function delete($id)
     {
-        $voucher = $this->find($id);
-        return $voucher->delete();
+        $incomeVoucher = $this->find($id);
+        return $incomeVoucher->delete();
     }
 
     public function search($search, $perPage = 10)
@@ -58,7 +60,7 @@ class ExpenseVoucherRepositoryImplement extends Eloquent implements ExpenseVouch
         if (!empty($search)) {
             $query->where(function ($q) use ($search) {
                 $q->where('number', 'like', "%{$search}%")
-                ->orWhere('paid_to', 'like', "%{$search}%")
+                ->orWhere('received_from', 'like', "%{$search}%")
                 ->orWhereHas('details', function ($dq) use ($search) {
                     $dq->where('description', 'like', "%{$search}%");
                 });

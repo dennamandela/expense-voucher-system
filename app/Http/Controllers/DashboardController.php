@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use App\Models\ExpenseVoucher;
+use App\Models\IncomeVoucher;
+use App\Models\InitialBalance;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -12,34 +14,68 @@ class DashboardController extends Controller
         $month = now()->month;
         $year  = now()->year;
 
-        $totalMonth = \App\Models\ExpenseVoucher::whereMonth('date', $month)
+        /**
+         * ================= SALDO AWAL =================
+         */
+        $saldoAwal = InitialBalance::where('year', $year)
+            ->where('month', $month)
+            ->value('amount') ?? 0;
+
+        /**
+         * ================= TOTAL PENERIMAAN =================
+         */
+        $totalIncome = IncomeVoucher::whereMonth('date', $month)
             ->whereYear('date', $year)
             ->sum('total');
 
-        $countMonth = \App\Models\ExpenseVoucher::whereMonth('date', $month)
+        /**
+         * ================= TOTAL PENGELUARAN =================
+         */
+        $totalExpense = ExpenseVoucher::whereMonth('date', $month)
             ->whereYear('date', $year)
-            ->count();
-
-        $totalKas = \App\Models\ExpenseVoucher::whereMonth('date', $month)
-            ->whereYear('date', $year)
-            ->where('payment_method', 'KAS')
             ->sum('total');
 
-        $totalBank = \App\Models\ExpenseVoucher::whereMonth('date', $month)
-            ->whereYear('date', $year)
-            ->where('payment_method', 'BANK')
-            ->sum('total');
+        /**
+         * ================= SALDO AKHIR =================
+         */
+        $saldoAkhir = $saldoAwal + $totalIncome - $totalExpense;
 
-        $latestVoucher = \App\Models\ExpenseVoucher::latest('date')
+        /**
+         * ================= TRANSAKSI TERAKHIR =================
+         * Gabungan bon penerimaan & pengeluaran
+         */
+        $latestIncome = IncomeVoucher::select(
+                'date',
+                'number',
+                'total',
+                'notes as subject'
+            )
+            ->addSelect(DB::raw("'INCOME' as type"))
+            ->latest('date')
+            ->limit(5);
+
+        $latestExpense = ExpenseVoucher::select(
+                'date',
+                'number',
+                'total',
+                'notes as subject'
+            )
+            ->addSelect(DB::raw("'EXPENSE' as type"))
+            ->latest('date')
+            ->limit(5);
+
+        $latestTransactions = $latestIncome
+            ->unionAll($latestExpense)
+            ->orderBy('date', 'desc')
             ->limit(5)
             ->get();
 
         return view('dashboard', compact(
-            'totalMonth',
-            'countMonth',
-            'totalKas',
-            'totalBank',
-            'latestVoucher'
+            'saldoAwal',
+            'totalIncome',
+            'totalExpense',
+            'saldoAkhir',
+            'latestTransactions'
         ));
     }
 }

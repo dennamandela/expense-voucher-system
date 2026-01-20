@@ -3,7 +3,7 @@
   <!--begin::Head-->
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Dashboard</title>
+    <title>Edit Bon Penerimaan</title>
     <!--begin::Accessibility Meta Tags-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
     <meta name="color-scheme" content="light dark" />
@@ -71,18 +71,10 @@
       crossorigin="anonymous"
     />
     <style>
-      .btn-pdip {
-        background-color: #b71c1c;
-        border-color: #b71c1c;
-        color: #fff;
-      }
-
-      .btn-pdip:hover {
-        background-color: #8e1515;
-        border-color: #8e1515;
-        color: #fff;
-      }
-    </style>
+.swal2-popup {
+    font-size: 0.9rem;
+}
+</style>
   </head>
   <!--end::Head-->
   <!--begin::Body-->
@@ -103,11 +95,11 @@
           <div class="container-fluid">
             <!--begin::Row-->
             <div class="row">
-              <div class="col-sm-6"><h3 class="mb-0">Dashboard</h3></div>
+              <div class="col-sm-6"><h3 class="mb-0">Edit Bon Penerimaan</h3></div>
               <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-end">
                   <li class="breadcrumb-item"><a href="#">Home</a></li>
-                  <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+                  <li class="breadcrumb-item active" aria-current="page">Edit Bon Penerimaan</li>
                 </ol>
               </div>
             </div>
@@ -115,43 +107,9 @@
           </div>
           <!--end::Container-->
         </div>
-        
         <!--end::App Content Header-->
         <!--begin::App Content-->
         @yield('content')
-        <div class="toast-container position-fixed top-0 end-0 p-3" style="z-index: 1100">
-
-    @if (session('success'))
-        <div class="toast align-items-center text-bg-success border-0 show"
-             role="alert"
-             data-bs-delay="3000">
-            <div class="d-flex">
-                <div class="toast-body">
-                    <i class="bi bi-check-circle me-1"></i>
-                    {{ session('success') }}
-                </div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto"
-                        data-bs-dismiss="toast"></button>
-            </div>
-        </div>
-    @endif
-
-    @if (session('error'))
-        <div class="toast align-items-center text-bg-danger border-0 show"
-             role="alert"
-             data-bs-delay="4000">
-            <div class="d-flex">
-                <div class="toast-body">
-                    <i class="bi bi-exclamation-triangle me-1"></i>
-                    {{ session('error') }}
-                </div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto"
-                        data-bs-dismiss="toast"></button>
-            </div>
-        </div>
-    @endif
-
-</div>
         <!--end::App Content-->
       </main>
       <!--end::App Main-->
@@ -159,6 +117,35 @@
       @include('layouts.include.footer')
       <!--end::Footer-->
     </div>
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+
+    @if (session('success'))
+        <div class="toast bg-success text-white fade show" role="alert">
+            <div class="toast-header bg-success text-white border-0">
+                <i class="bi bi-check-circle me-2"></i>
+                <strong class="me-auto">Berhasil</strong>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"></button>
+            </div>
+            <div class="toast-body">
+                {{ session('success') }}
+            </div>
+        </div>
+    @endif
+
+    @if (session('error'))
+        <div class="toast bg-danger text-white fade show" role="alert">
+            <div class="toast-header bg-danger text-white border-0">
+                <i class="bi bi-x-circle me-2"></i>
+                <strong class="me-auto">Gagal</strong>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast"></button>
+            </div>
+            <div class="toast-body">
+                {{ session('error') }}
+            </div>
+        </div>
+    @endif
+
+</div>
     <!--end::App Wrapper-->
     <!--begin::Script-->
     <!--begin::Third Party Plugin(OverlayScrollbars)-->
@@ -388,13 +375,127 @@
       sparkline3.render();
     </script>
     <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const toastElList = [].slice.call(document.querySelectorAll('.toast'))
-        toastElList.map(function (toastEl) {
-            return new bootstrap.Toast(toastEl).show()
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.toast').forEach(toastEl => {
+        const toast = new bootstrap.Toast(toastEl, {
+            delay: 3000,
+            autohide: true
         })
+        toast.show()
     })
+})
 </script>
+<script>
+    function confirmDelete(id) {
+        Swal.fire({
+            title: 'Yakin hapus data ini?',
+            text: 'Data yang sudah dihapus tidak bisa dikembalikan.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Ya, Hapus',
+            cancelButtonText: 'Batal'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('delete-form-' + id).submit();
+            }
+        });
+    }
+</script>
+
+<script>
+  /**
+   * ============================
+   * INIT INDEX (lanjut dari data lama)
+   * ============================
+   */
+  let index = {{ $incomeVoucher->details?->count() ?? 0 }};
+
+  /**
+   * ============================
+   * ADD ROW
+   * ============================
+   */
+  document.getElementById('addRow').addEventListener('click', function () {
+    const table = document.querySelector('#expenseTable tbody');
+
+    const row = `
+      <tr>
+        <td>
+          <input type="text" name="details[${index}][description]" class="form-control" required>
+        </td>
+        <td>
+          <input type="number" name="details[${index}][amount]" class="form-control amount" min="0" value="0" required>
+        </td>
+        <td class="text-center">
+          <button type="button" class="btn btn-danger btn-sm removeRow">
+            ❌
+          </button>
+        </td>
+      </tr>
+    `;
+
+    table.insertAdjacentHTML('beforeend', row);
+    index++;
+    calculateTotal();
+  });
+
+  /**
+   * ============================
+   * REMOVE ROW
+   * ============================
+   */
+  document.addEventListener('click', function (e) {
+    if (e.target.classList.contains('removeRow')) {
+      const rows = document.querySelectorAll('#expenseTable tbody tr');
+
+      if (rows.length > 1) {
+        e.target.closest('tr').remove();
+        calculateTotal();
+      }
+    }
+  });
+
+  /**
+   * ============================
+   * REALTIME TOTAL
+   * ============================
+   */
+  document.addEventListener('input', function (e) {
+    if (e.target.classList.contains('amount')) {
+      calculateTotal();
+    }
+  });
+
+  /**
+   * ============================
+   * CALCULATE TOTAL
+   * ============================
+   */
+  function calculateTotal() {
+    let total = 0;
+
+    document.querySelectorAll('.amount').forEach(input => {
+      total += Number(input.value || 0);
+    });
+
+    document.getElementById('totalText').innerText =
+      total.toLocaleString('id-ID');
+
+    document.getElementById('totalInput').value = total;
+  }
+
+  /**
+   * ============================
+   * HITUNG TOTAL SAAT HALAMAN LOAD
+   * ============================
+   */
+  document.addEventListener('DOMContentLoaded', function () {
+    calculateTotal();
+  });
+</script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!--end::Script-->
   </body>
   <!--end::Body-->

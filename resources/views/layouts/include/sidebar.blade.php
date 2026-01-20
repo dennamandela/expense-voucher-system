@@ -52,7 +52,7 @@
                 <a href="#" class="nav-link {{ request()->is('expense-voucher*') ? 'active' : '' }}">
                   <i class="nav-icon bi bi-receipt"></i>
                   <p>
-                    Bukti Pengeluaran
+                    Transaksi
                     <i class="nav-arrow bi bi-chevron-right"></i>
                   </p>
                 </a>
@@ -62,15 +62,14 @@
                     <a href="{{ route('expense-voucher') }}"
                       class="nav-link {{ request()->routeIs('expense-voucher') ? 'active' : '' }}">
                       <i class="nav-icon bi bi-list-check"></i>
-                      <p>Daftar Bon Pengeluaran</p>
+                      <p>Pengeluaran</p>
                     </a>
                   </li>
 
                   <li class="nav-item">
-                    <a href="{{ route('expense-voucher.create') }}"
-                      class="nav-link {{ request()->routeIs('expense-voucher.create') ? 'active' : '' }}">
-                      <i class="nav-icon bi bi-plus-circle"></i>
-                      <p>Tambah Bon Pengeluaran</p>
+                    <a href="{{ route('income-voucher') }}" class="nav-link">
+                      <i class="nav-icon bi bi-arrow-down-circle"></i>
+                      <p>Penerimaan</p>
                     </a>
                   </li>
                 </ul>

@@ -32,27 +32,11 @@ class ReportServiceImplement extends Service implements ReportService{
       $this->mainRepository = $mainRepository;
     }
 
-    public function cashBook(int $year, array $openingBalances)
+    public function cashBook($filter)
     {
-        $expenses = $this->mainRepository->cashBook($year);
-        $rows = [];
-
-        foreach ($this->months as $num => $name) {
-            $saldoAwal   = (float) ($openingBalances[$num] ?? 0);
-            $pengeluaran = (float) ($expenses[$num] ?? 0);
-
-            $saldoAkhir = $saldoAwal - $pengeluaran;
-
-            $rows[] = [
-                'bulan' => $name,
-                'penerimaan' => 0,
-                'pengeluaran' => $pengeluaran,
-                'saldo' => $saldoAkhir,
-                'keterangan' => '',
-            ];
+        if ($filter['type'] === 'daily') {
+            return $this->daily($filter);
         }
-
-        return $rows;
     }
 
 

@@ -7,5 +7,5 @@ use LaravelEasyRepository\BaseService;
 interface ReportService extends BaseService{
 
     // Write something awesome :)
-    public function cashBook(int $year, array $openingBalances);
+    public function cashBook($filter);
 }

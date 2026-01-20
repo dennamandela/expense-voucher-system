@@ -17,12 +17,18 @@ use App\Repositories\Report\ReportRepository;
 use App\Repositories\Report\ReportRepositoryImplement;
 use App\Repositories\InitialBalance\InitialBalanceRepository;
 use App\Repositories\InitialBalance\InitialBalanceRepositoryImplement;
+use App\Repositories\IncomeVoucher\IncomeVoucherRepository;
+use App\Repositories\IncomeVoucher\IncomeVoucherRepositoryImplement;
+use App\Repositories\IncomeDetail\IncomeDetailRepository;
+use App\Repositories\IncomeDetail\IncomeDetailRepositoryImplement;
 use App\Services\ExpenseVoucher\ExpenseVoucherService;
 use App\Services\ExpenseVoucher\ExpenseVoucherServiceImplement;
 use App\Services\Report\ReportService;
 use App\Services\Report\ReportServiceImplement;
 use App\Services\InitialBalance\InitialBalanceService;
 use App\Services\InitialBalance\InitialBalanceServiceImplement;
+use App\Services\IncomeVoucher\IncomeVoucherService;
+use App\Services\IncomeVoucher\IncomeVoucherServiceImplement;
 
 
 class AppServiceProvider extends ServiceProvider
@@ -32,7 +38,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //User Repository
+        //Repository
         $this->app->bind(
             UserRepository::class,
             UserRepositoryImplement::class
@@ -58,6 +64,16 @@ class AppServiceProvider extends ServiceProvider
             InitialBalanceRepositoryImplement::class
         );
 
+        $this->app->bind(
+            IncomeVoucherRepository::class,
+            IncomeVoucherRepositoryImplement::class
+        );
+
+        $this->app->bind(
+            IncomeDetailRepository::class,
+            IncomeDetailRepositoryImplement::class
+        );
+
         //Services
         $this->app->bind(
             AuthService::class,
@@ -77,6 +93,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             InitialBalanceService::class,
             InitialBalanceServiceImplement::class
+        );
+
+        $this->app->bind(
+            IncomeVoucherService::class,
+            IncomeVoucherServiceImplement::class
         );
     }
 
