@@ -4,6 +4,7 @@ namespace App\Repositories\ExpenseVoucher;
 
 use LaravelEasyRepository\Implementations\Eloquent;
 use App\Models\ExpenseVoucher;
+use Illuminate\Support\Facades\DB;
 
 class ExpenseVoucherRepositoryImplement extends Eloquent implements ExpenseVoucherRepository{
 
@@ -70,21 +71,26 @@ class ExpenseVoucherRepositoryImplement extends Eloquent implements ExpenseVouch
 
     public function getDaily($year, $month)
     {
-        return DB::table('income_vouchers')
-            ->selectRaw('date, SUM(total) as total')
-            ->whereYear('date', $year)
-            ->whereMonth('date', $month)
-            ->groupBy('date')
-            ->orderBy('date')
+        return DB::table('expense_vouchers as ev')
+            ->join('expense_details as ed', 'ed.expense_voucher_id', '=', 'ev.id')
+            ->select(
+                'ev.date',
+                'ed.description as keterangan',
+                'ed.amount as pengeluaran',
+                DB::raw('0 as penerimaan')
+            )
+            ->whereYear('ev.date', $year)
+            ->whereMonth('ev.date', $month)
+            ->orderBy('ev.date')
             ->get();
     }
 
     public function getMonthly($year)
     {
-        return DB::table('income_vouchers')
+        return DB::table('expense_vouchers')
             ->selectRaw('MONTH(date) as month, SUM(total) as total')
             ->whereYear('date', $year)
-            ->groupBy('MONTH(date)')
-            ->pluck('total', 'month')
+            ->groupBy(DB::raw('MONTH(date)'))
+            ->pluck('total', 'month');
     }
 }

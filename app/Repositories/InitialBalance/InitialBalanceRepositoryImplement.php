@@ -4,6 +4,7 @@ namespace App\Repositories\InitialBalance;
 
 use LaravelEasyRepository\Implementations\Eloquent;
 use App\Models\InitialBalance;
+use Illuminate\Support\Facades\DB;
 
 class InitialBalanceRepositoryImplement extends Eloquent implements InitialBalanceRepository{
 
@@ -53,11 +54,19 @@ class InitialBalanceRepositoryImplement extends Eloquent implements InitialBalan
         return $openingBalance->delete();
     }
 
-    public function findByYearAndMethod($year)
+    public function getByYear($year)
     {
-        return $this->model
+        return DB::table('initial_balances')
             ->where('year', $year)
-            ->get()
-            ->pluck('amount', 'month');
+            ->pluck('amount', 'month')
+            ->toArray();
+    }
+
+    public function getByMonth($year, $month)
+    {
+        return DB::table('initial_balances')
+            ->where('year', $year)
+            ->where('month', $month)
+            ->value('amount') ?? 0;
     }
 }

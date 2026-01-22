@@ -20,19 +20,21 @@ class ReportController extends Controller
 
     public function cashBook(Request $request)
     {
-        $year = (int) $request->get('year', now()->year);
+        $year = $request->get('year', now()->year);
+        $month = $request->get('month', now()->month);
+        $type  = $request->get('type', 'monthly');
 
-        // sementara hardcode, nanti bisa dari tabel setting
-        $openingBalances = $this->initialBalanceService->getByYear($year);
-
-        $rows = $this->reportService->cashBook(
-            $year,
-            $openingBalances
-        );
+        if ($type === 'daily') {
+            $rows = $this->reportService->daily($year, $month);
+        } else {
+            $rows = $this->reportService->monthly($year);
+        }
 
         return view('reports.cash-book', [
-            'rows' => $rows,
-            'year' => $year,
+            'rows'  => $rows,
+            'year'  => $year,
+            'month' => $month,
+            'type'  => $type,
         ]);
     }
 

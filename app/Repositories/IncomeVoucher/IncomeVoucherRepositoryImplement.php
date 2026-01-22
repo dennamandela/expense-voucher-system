@@ -4,6 +4,7 @@ namespace App\Repositories\IncomeVoucher;
 
 use LaravelEasyRepository\Implementations\Eloquent;
 use App\Models\IncomeVoucher;
+use Illuminate\Support\Facades\DB;
 
 class IncomeVoucherRepositoryImplement extends Eloquent implements IncomeVoucherRepository{
 
@@ -72,12 +73,17 @@ class IncomeVoucherRepositoryImplement extends Eloquent implements IncomeVoucher
 
     public function getDaily($year, $month)
     {
-        return DB::table('income_vouchers')
-            ->selectRaw('date, SUM(total) as total')
-            ->whereYear('date', $year)
-            ->whereMonth('date', $month)
-            ->groupBy('date')
-            ->orderBy('date')
+        return DB::table('income_vouchers as iv')
+            ->join('income_details as id', 'id.income_voucher_id', '=', 'iv.id')
+            ->select(
+                'iv.date',
+                'id.description as keterangan',
+                'id.amount as penerimaan',
+                DB::raw('0 as pengeluaran')
+            )
+            ->whereYear('iv.date', $year)
+            ->whereMonth('iv.date', $month)
+            ->orderBy('iv.date')
             ->get();
     }
 
@@ -86,7 +92,7 @@ class IncomeVoucherRepositoryImplement extends Eloquent implements IncomeVoucher
         return DB::table('income_vouchers')
             ->selectRaw('MONTH(date) as month, SUM(total) as total')
             ->whereYear('date', $year)
-            ->groupBy('MONTH(date)')
-            ->pluck('total', 'month')
+            ->groupBy(DB::raw('MONTH(date)'))
+            ->pluck('total', 'month');
     }
 }

@@ -14,6 +14,7 @@ interface InitialBalanceRepository extends Repository{
     public function update($id, $data);
     public function delete($id);
 
-    public function findByYearAndMethod($year);
+    public function getByYear($year);
+    public function getByMonth($year, $month);
     // public function search($search, $perPage = 10);
 }
