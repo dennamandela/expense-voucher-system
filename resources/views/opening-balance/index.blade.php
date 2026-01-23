@@ -132,21 +132,30 @@
         <div class="modal-body">
           <div class="mb-2">
             <label>Tahun</label>
-            <input type="number" name="year" class="form-control" required>
+            <input type="number" name="year" class="form-control @error('year') is-invalid @enderror" value="{{ old('year') }}">
+              @error('year')
+                <div class="invalid-feedback">{{ $message }}</div>
+              @enderror
           </div>
           <div class="mb-2">
             <label>Bulan</label>
-            <select name="month" class="form-control" required>
+            <select name="month" class="form-control @error('month') is-invalid @enderror">
               @for ($m = 1; $m <= 12; $m++)
                 <option value="{{ $m }}">
                   {{ \Carbon\Carbon::create()->month($m)->translatedFormat('F') }}
                 </option>
               @endfor
             </select>
+            @error('month')
+              <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
           </div>
           <div class="mb-2">
             <label>Saldo Awal</label>
-            <input type="number" name="amount" class="form-control" required>
+            <input type="number" name="amount" class="form-control @error('amount') is-invalid @enderror" value="{{ old('amount') }}">
+            @error('amount')
+              <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
           </div>
         </div>
         <div class="modal-footer">

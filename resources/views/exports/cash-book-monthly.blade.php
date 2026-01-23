@@ -29,7 +29,7 @@
     <td><strong>Saldo Awal Tahun</strong></td>
     <td></td>
     <td></td>
-    <td>{{ $saldoAwalTahun }}</td>
+    <td>{{ $saldoAwalTahun = $rows[0]['saldo_awal'] ?? 0; }}</td>
     <td></td>
   </tr>
 

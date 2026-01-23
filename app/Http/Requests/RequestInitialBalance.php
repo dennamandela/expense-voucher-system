@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class RequestInitialBalance extends FormRequest
 {
@@ -22,9 +23,13 @@ class RequestInitialBalance extends FormRequest
     public function rules(): array
     {
         return [
-            'year' => 'required|integer|min:2000|max:' . now()->year,
-            'month'  => 'required|integer|between:1,12',
-            'amount' => 'required|numeric|min:1',
+            'year' => ['required','integer','min:2000','max:' . now()->year],
+            'month' => ['required','integer','between:1,12'],
+            'amount' => ['required','numeric','min:1'],
+            // validasi unik kombinasi:
+            Rule::unique('opening_balances')->where(fn($q) =>
+                $q->where('year', $this->year)->where('month', $this->month)
+            ),
         ];
     }
 

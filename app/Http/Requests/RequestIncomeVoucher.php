@@ -30,7 +30,7 @@ class RequestIncomeVoucher extends FormRequest
                 'required',
                 'string',
                 'max:50',
-                Rule::unique('income_vouchers', 'number')->ignore($id),
+                Rule::unique('expense_vouchers', 'number')->ignore($id),
             ],
             'date' => 'required|date',
             'received_from' => 'required|string|max:255',

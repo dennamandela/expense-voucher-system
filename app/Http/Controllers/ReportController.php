@@ -6,7 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\Report\ReportService;
 use App\Services\InitialBalance\InitialBalanceService;
-use App\Exports\CashBookExport;
+use App\Exports\CashBookDailyExport;
+use App\Exports\CashBookMonthlyExport;
 use Maatwebsite\Excel\Facades\Excel;
 
 class ReportController extends Controller
@@ -43,15 +44,24 @@ class ReportController extends Controller
      */
     public function exportCashBook(Request $request)
     {
+        $type = $request->get('type'); // daily | monthly
         $year = (int) $request->get('year', now()->year);
 
-        $openingBalances = $this->initialBalanceService->getByYear($year);
-        $rows = $this->reportService->cashBook($year, $openingBalances);
-        $saldoAwalTahun = (float) ($openingBalances[1] ?? 0);
+        if ($type === 'daily') {
+            $month = (int) $request->get('month', now()->month);
+            $rows  = $this->reportService->daily($year, $month);
+
+            return Excel::download(
+                new CashBookDailyExport($rows, $year, $month),
+                "Buku_Kas_Harian_{$year}_{$month}.xlsx"
+            );
+        }
+
+        $rows = $this->reportService->monthly($year);
 
         return Excel::download(
-            new CashBookExport($rows, $year, $saldoAwalTahun),
-            "Buku_Kas_Umum_{$year}.xlsx"
+            new CashBookMonthlyExport($rows, $year),
+            "Buku_Kas_Bulanan_{$year}.xlsx"
         );
     }
 }

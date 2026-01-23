@@ -60,8 +60,8 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('opening-balances', InitialBalanceController::class)
     ->except(['create', 'edit', 'show']);
     
-    Route::get('/reports/cash-book/export', [ReportController::class, 'exportCashBook'])
-    ->name('reports.cash-book.export');
+    Route::get('/cash-book/export', [ReportController::class, 'exportCashBook'])
+        ->name('reports.cash-book.export');
 
     Route::post('/logout', [AuthController::class, 'logout'])
     ->name('logout');

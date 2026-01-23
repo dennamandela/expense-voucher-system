@@ -4,35 +4,43 @@
 <div class="container-fluid">
 
   {{-- FILTER --}}
-  <form method="GET" class="row g-2 mb-3">
-    <div class="col-md-2">
-      <input type="number" name="year" class="form-control"
-             value="{{ $year }}">
-    </div>
+  <form method="GET" class="mb-3">
+    <div class="d-flex flex-wrap gap-2 align-items-end">
 
-    <div class="col-md-2">
-      <select name="month" class="form-select">
-        @foreach(range(1,12) as $m)
-          <option value="{{ $m }}" @selected($m == $month)>
-            {{ \Carbon\Carbon::create()->month($m)->translatedFormat('F') }}
-          </option>
-        @endforeach
-      </select>
-    </div>
+      <div style="width:120px">
+        <input type="number" name="year" class="form-control"
+              value="{{ $year }}">
+      </div>
 
-    <div class="col-md-2">
-      <select name="type" class="form-select">
-        <option value="monthly" @selected($type === 'monthly')>
-          Bulanan
-        </option>
-        <option value="daily" @selected($type === 'daily')>
-          Harian
-        </option>
-      </select>
-    </div>
+      <div style="width:160px">
+        <select name="month" class="form-select">
+          @foreach(range(1,12) as $m)
+            <option value="{{ $m }}" @selected($m == $month)>
+              {{ \Carbon\Carbon::create()->month($m)->translatedFormat('F') }}
+            </option>
+          @endforeach
+        </select>
+      </div>
 
-    <div class="col-md-2">
-      <button class="btn btn-primary">Terapkan</button>
+      <div style="width:140px">
+        <select name="type" class="form-select">
+          <option value="monthly" @selected($type === 'monthly')>Bulanan</option>
+          <option value="daily" @selected($type === 'daily')>Harian</option>
+        </select>
+      </div>
+
+      {{-- BUTTON GROUP --}}
+      <div class="d-flex gap-2">
+        <button class="btn btn-primary">
+          Terapkan
+        </button>
+
+        <a href="{{ route('reports.cash-book.export', request()->query()) }}"
+          class="btn btn-success">
+          Export Excel
+        </a>
+      </div>
+
     </div>
   </form>
 
